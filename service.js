@@ -2,19 +2,24 @@ const model = require('./model');
 const dbContext = require('./dbContext');
 
 class Service {
-    constructor () { }
+    constructor () {
+        this.service = "Service";
+        this.method = "";
+     }
 
     async getTasks () {
+        this.method = "getTasks";
         try{
             let db = await dbContext.connect()
             let result = await db.collection('tasks').find({}).toArray();
-            console.log(result); 
-            return result;
+            let serviceResult  = { status:"success", message: "Tasks retrieved.",service: this.service, method: this.method, data: result };
+            console.log(serviceResult); 
+            return serviceResult;
         }
-        catch (err) {
-            let msg = `Error fetching tasks!: ${err}`;
-            console.error(msg);
-            return msg;
+        catch (error) {
+            let serviceResult  = { status: "failure", message: error, service: this.service, method: this.method, data: null};
+            console.error(serviceResult);
+            return serviceResult;
         }                  
     }
 
@@ -22,12 +27,13 @@ class Service {
         try {
             let db = await dbContext.connect();
             let result = await db.collection('tasks').findOne({id: id});
-            console.log(result); 
-            return result;            
-        } catch (err) {
-            let msg = `Error fetching a task!: ${err}`;
-            console.error(msg);
-            return msg;
+            let serviceResult  = { status:"success", message: "Task retrieved.", service: this.service, method: this.method, data: result };
+            console.log(serviceResult); 
+            return serviceResult;            
+        } catch (error) {
+            let serviceResult  = { status: "failure", message: error, service: this.service, method: this.method, data: null};
+            console.error(serviceResult);
+            return serviceResult;
         } 
     }
 
@@ -35,14 +41,13 @@ class Service {
         try {
             let db = await dbContext.connect();
             let result = await db.collection('tasks').insertOne(task);
-            console.log(result); 
-            let msg = { message: "Success adding a task!" }
-            console.log(msg);
-            return msg; 
-        } catch (err) {
-            let msg = `Error adding a task!: ${err}`;
-            console.error(msg);
-            return msg;
+            let serviceResult  = { status:"success", message: "Task added.", service: this.service, method: this.method, data: result };
+            console.log(serviceResult);
+            return serviceResult; 
+        } catch (error) {
+            let serviceResult  = { status: "failure", message: error, service: this.service, method: this.method, data: null};
+            console.error(serviceResult);
+            return serviceResult;
         }
     }
 
@@ -50,14 +55,13 @@ class Service {
         try {
             let db = await dbContext.connect();
             let result = await db.collection('tasks').updateOne({id: task.id }, { $set: task})
-            console.log(result); 
-            let msg = { message: "Success updating a task!" }
-            console.log(msg);
-            return msg; 
-        } catch (err) {
-            let msg = `Error updating a task!: ${err}`;
-            console.error(msg);
-            return msg;
+            let serviceResult  = { status:"success", message: "Task updated.", service: this.service, method: this.method, data: result };
+            console.log(serviceResult);
+            return serviceResult; 
+        } catch (error) {
+            let serviceResult  = { status: "failure", message: error, service: this.service, method: this.method, data: null};
+            console.error(serviceResult);
+            return serviceResult;
         }
     }
     
@@ -65,14 +69,13 @@ class Service {
         try {
             let db = await dbContext.connect();
             let result = await db.collection('tasks').deleteOne(task)
-            console.log(result); 
-            let msg = { message: "Success deleting a task!" }
-            console.log(msg);
-            return msg; 
-        } catch (err) {
-            let msg = `Error deleting a task!: ${err}`;
-            console.error(msg);
-            return msg;
+            let serviceResult  = { status:"success", message: "Task deleted.", service: this.service, method: this.method, data: result };
+            console.log(serviceResult);
+            return serviceResult; 
+        } catch (error) {
+            let serviceResult  = { status: "failure", message: error, service: this.service, method: this.method, data: null};
+            console.error(serviceResult);
+            return serviceResult;
         }
     }
 }

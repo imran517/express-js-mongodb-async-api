@@ -11,8 +11,8 @@ module.exports = {
         console.log("Successfully connected to MongoDB.");
         return client.db("taskdb");
       }
-      catch(err) {
-        console.error(`Fatal error occurred: ${err}`);
+      catch(error) {
+        console.error(`Fatal error occurred: ${error}`);
         return null;
       }
     }
